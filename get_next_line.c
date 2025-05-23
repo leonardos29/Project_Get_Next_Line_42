@@ -6,7 +6,7 @@
 /*   By: leonasil <leonasil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:04:59 by leonasil          #+#    #+#             */
-/*   Updated: 2025/05/20 19:01:19 by leonasil         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:13:29 by leonasil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,15 @@ char	*get_next_line(int fd)
 	static char	*stash;
 	char		*line;
 
+	if (fd == -1)
+	{
+		if (stash)
+		{
+			free(stash);
+			stash = NULL;
+		}
+		return (NULL);
+	}
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
 	stash = read_file(fd, stash);
@@ -128,5 +137,7 @@ int main ()
     free(line2);
     free(line3);
     free(line4);
+	get_next_line(-1);
+	close(fd);
 }
 */

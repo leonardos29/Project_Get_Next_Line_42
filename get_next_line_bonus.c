@@ -6,11 +6,12 @@
 /*   By: leonasil <leonasil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:31:12 by leonasil          #+#    #+#             */
-/*   Updated: 2025/05/20 19:01:06 by leonasil         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:12:03 by leonasil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
+#include <stdio.h>
 
 char	*read_file(int fd, char *rest)
 {
@@ -92,11 +93,32 @@ char	*update_stash(char *stash)
 	return (new_stash);
 }
 
+void	free_stash(char **stash)
+{
+	int	i;
+
+	i = 0;
+	while (i < OPEN_MAX)
+	{
+		if (stash[i])
+		{
+			free (stash[i]);
+			stash[i] = NULL;
+		}
+		i++;
+	}
+}
+
 char	*get_next_line(int fd)
 {
 	static char	*stash[OPEN_MAX];
 	char		*line;
 
+	if (fd == -1)
+	{
+		free_stash(stash);
+		return (NULL);
+	}
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
 	stash[fd] = read_file(fd, stash[fd]);
@@ -122,12 +144,14 @@ int main ()
     char *line2 = get_next_line(fd1);
     char *line3 = get_next_line(fd2);
     char *line4 = get_next_line(fd1);
-    printf("%s",line1);
+	 printf("%s",line1);
      printf("%s",line2);
       printf("%s",line3);
-            printf("%s \n",line4);
+       printf("%s",line4);
     free(line1);
     free(line2);
     free(line3);
+	free(line4);
+	get_next_line(-1);
 }
 */

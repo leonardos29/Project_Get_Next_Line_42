@@ -6,7 +6,7 @@
 /*   By: leonasil <leonasil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:05:07 by leonasil          #+#    #+#             */
-/*   Updated: 2025/05/20 18:59:38 by leonasil         ###   ########.fr       */
+/*   Updated: 2025/05/20 20:50:52 by leonasil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdio.h>
 
 char	*get_next_line(int fd);
 char	*read_file(int fd, char *rest);
