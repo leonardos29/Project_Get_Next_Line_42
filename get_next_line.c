@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leonasil <leonasil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: leonardo_ouza <leonardo_ouza@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:04:59 by leonasil          #+#    #+#             */
-/*   Updated: 2025/05/23 20:13:29 by leonasil         ###   ########.fr       */
+/*   Updated: 2025/05/24 19:39:12 by leonardo_ou      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+//#include <stdio.h>
 
 char	*read_file(int fd, char *rest)
 {
