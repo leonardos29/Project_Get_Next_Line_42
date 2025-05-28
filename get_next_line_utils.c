@@ -6,7 +6,7 @@
 /*   By: leonasil <leonasil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:05:10 by leonasil          #+#    #+#             */
-/*   Updated: 2025/05/16 14:48:55 by leonasil         ###   ########.fr       */
+/*   Updated: 2025/05/28 20:52:43 by leonasil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,63 +38,78 @@ size_t	ft_strlen(const char *s)
 	return (size);
 }
 
-char	*ft_strjoin_free(char *s1, char *s2)
+size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
+	size_t	dst_l;
+	size_t	src_l;
 	size_t	i;
-	size_t	k;
-	char	*new;
 
-	if (!s1 || !s2)
-		return (NULL);
-	new = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	if (!new)
-	{
-		free(s1);
-		return (NULL);
-	}
+	dst_l = ft_strlen(dst);
+	src_l = ft_strlen(src);
 	i = 0;
-	while (s1[i])
+	if (size <= dst_l)
+		return (size + src_l);
+	while ((i < size - dst_l - 1) && (src[i] != '\0'))
 	{
-		new[i] = s1[i];
+		dst[dst_l + i] = src[i];
 		i++;
 	}
-	k = 0;
-	while (s2[k])
-		new[i++] = s2[k++];
-	new[i] = '\0';
-	free(s1);
-	return (new);
+	dst[dst_l + i] = '\0';
+	return (dst_l + src_l);
 }
 
-void	*ft_calloc(size_t nmemb, size_t size)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	unsigned char	*ptr;
-	size_t			total_size;
-	size_t			size_max;
-	size_t			i;
+	unsigned char	*s;
+	unsigned char	*d;
 
-	size_max = (size_t)-1;
-	if (nmemb == 0 || size == 0)
-		return (malloc(0));
-	if (size && nmemb > size_max / size)
-		return (NULL);
-	total_size = nmemb * size;
-	ptr = malloc(total_size);
-	if (!ptr)
-		return (NULL);
-	i = 0;
-	while (i < total_size)
-		ptr[i++] = 0;
-	return ((void *)ptr);
-}
-
-int	is_error(ssize_t result, char *buff, char *rest)
-{
-	if (result < 0)
+	s = (unsigned char *)src;
+	d = (unsigned char *)dest;
+	if (d == s)
+		return (dest);
+	if (d < s)
 	{
-		free(buff);
-		free(rest);
-		return (1);
+		while (n--)
+		{
+			*(d++) = *(s++);
+		}
 	}
-	return (0);
+	else
+	{
+		d += n;
+		s += n;
+		while (n--)
+		{
+			*(--d) = *(--s);
+		}
+	}
+	return (dest);
+}
+
+char	*extract_line(char *stash)
+{
+	char	*line;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (stash[i] && stash[i] != '\n')
+		i++;
+	if (stash[i] == '\n')
+		i++;
+	line = malloc(i + 1);
+	if (!line)
+		return (NULL);
+	j = 0;
+	while (j < i)
+	{
+		line[j] = stash[j];
+		j++;
+	}
+	line[j] = '\0';
+	j = 0;
+	while (stash[i])
+		stash[j++] = stash[i++];
+	stash[j] = '\0';
+	return (line);
 }
