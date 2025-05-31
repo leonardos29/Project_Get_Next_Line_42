@@ -6,7 +6,7 @@
 /*   By: leonardo_ouza <leonardo_ouza@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 04:29:16 by leonardo_ou       #+#    #+#             */
-/*   Updated: 2025/05/31 05:40:29 by leonardo_ou      ###   ########.fr       */
+/*   Updated: 2025/05/31 05:59:54 by leonardo_ou      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,9 @@ int	main(void)
 {
 	int	fd = open("./teste.txt", O_RDONLY);
 	char *line1 = get_next_line(fd);
-	char *line2 = get_next_line(fd);
-	char *line3 = get_next_line(fd);
 	
-	printf("%s",line1[0]);
-	printf("%s \n",line2);
-	printf("%s \n",line3);
+	printf("%s",line1);
 	free(line1);
-	free(line2);
-	free(line3);
 	close(fd);
 }
 */
-
-

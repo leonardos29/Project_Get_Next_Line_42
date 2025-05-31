@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leonasil <leonasil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: leonardo_ouza <leonardo_ouza@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 18:31:12 by leonasil          #+#    #+#             */
-/*   Updated: 2025/05/28 21:04:49 by leonasil         ###   ########.fr       */
+/*   Created: 2025/05/31 06:06:45 by leonardo_ou       #+#    #+#             */
+/*   Updated: 2025/05/31 06:15:16 by leonardo_ou      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,27 @@
 
 char	*get_next_line(int fd)
 {
-	static char	stash[OPEN_MAX][BUFFER_SIZE + 1];
-	char		buff[BUFFER_SIZE + 1];
+	static char	buff[OPEN_MAX][BUFFER_SIZE + 1];
+	char		*stash;
 	char		*line;
-	ssize_t		rb;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
-	while (!ft_strchr(stash[fd], '\n'))
+	if (buff[fd][0] != '\0')
+		stash = ft_strjoin("", buff[fd]);
+	else
 	{
-		rb = read(fd, buff, BUFFER_SIZE);
-		if (rb <= 0)
-			break ;
-		buff[rb] = '\0';
-		ft_strlcat(stash[fd], buff, BUFFER_SIZE + 1);
+		stash = malloc(1);
+		if (!stash)
+			return (NULL);
+		stash[0] = '\0';
 	}
-	if (!*stash[fd])
+	stash = read_file(fd, stash, buff[fd]);
+	if (!stash)
 		return (NULL);
-	line = extract_line(stash[fd]);
+	line = get_line(stash);
+	update_buff(buff[fd]);
+	free(stash);
 	return (line);
 }
 /*
