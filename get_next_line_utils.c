@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leonasil <leonasil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: leonardo_ouza <leonardo_ouza@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/15 21:05:10 by leonasil          #+#    #+#             */
-/*   Updated: 2025/05/28 20:52:43 by leonasil         ###   ########.fr       */
+/*   Created: 2025/05/31 04:29:28 by leonardo_ou       #+#    #+#             */
+/*   Updated: 2025/05/31 05:22:45 by leonardo_ou      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,73 +25,68 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-size_t	ft_strlen(const char *s)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t	size;
+	char	*new;
+	int		len[2];
+	int		i;
+	int		j;
 
-	size = 0;
-	while (*s)
-	{
-		size++;
-		s++;
-	}
-	return (size);
+	if (!s1 || !s2)
+		return (NULL);
+	len[0] = 0;
+	len[1] = 0;
+	while (s1[len[0]])
+		len[0]++;
+	while (s2[len[1]])
+		len[1]++;
+	new = malloc(len[0] + len[1] + 1);
+	if (!new)
+		return (NULL);
+	i = -1;
+	while (s1[++i] != '\0')
+		new[i] = s1[i];
+	j = -1;
+	while (s2[++j])
+		new[i++] = s2[j];
+	new[i] = '\0';
+	return (new);
 }
 
-size_t	ft_strlcat(char *dst, const char *src, size_t size)
+char	*read_file(int fd, char *stash, char *buff)
 {
-	size_t	dst_l;
-	size_t	src_l;
-	size_t	i;
+	char		*tmp;
+	int			rb;
 
-	dst_l = ft_strlen(dst);
-	src_l = ft_strlen(src);
-	i = 0;
-	if (size <= dst_l)
-		return (size + src_l);
-	while ((i < size - dst_l - 1) && (src[i] != '\0'))
+	rb = 1;
+	while (!ft_strchr(stash, '\n') && rb > 0)
 	{
-		dst[dst_l + i] = src[i];
-		i++;
+		rb = read(fd, buff, BUFFER_SIZE);
+		if (rb < 0)
+			return (free(stash), NULL);
+		buff[rb] = '\0';
+		tmp = stash;
+		stash = ft_strjoin(stash, buff);
+		if (!stash)
+			return (free(tmp), NULL);
+		free(tmp);
 	}
-	dst[dst_l + i] = '\0';
-	return (dst_l + src_l);
+	if (rb == 0 && stash[0] == '\0')
+	{
+		free(stash);
+		return (NULL);
+	}
+	return (stash);
 }
 
-void	*ft_memmove(void *dest, const void *src, size_t n)
-{
-	unsigned char	*s;
-	unsigned char	*d;
-
-	s = (unsigned char *)src;
-	d = (unsigned char *)dest;
-	if (d == s)
-		return (dest);
-	if (d < s)
-	{
-		while (n--)
-		{
-			*(d++) = *(s++);
-		}
-	}
-	else
-	{
-		d += n;
-		s += n;
-		while (n--)
-		{
-			*(--d) = *(--s);
-		}
-	}
-	return (dest);
-}
-
-char	*extract_line(char *stash)
+char	*get_line(char *stash)
 {
 	char	*line;
-	size_t	i;
-	size_t	j;
+	int		i;
+	int		j;
 
+	if (!stash)
+		return (NULL);
 	i = 0;
 	while (stash[i] && stash[i] != '\n')
 		i++;
@@ -107,9 +102,21 @@ char	*extract_line(char *stash)
 		j++;
 	}
 	line[j] = '\0';
-	j = 0;
-	while (stash[i])
-		stash[j++] = stash[i++];
-	stash[j] = '\0';
 	return (line);
+}
+
+void	update_buff(char *buff)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (buff[i] && buff[i] != '\n')
+		i++;
+	if (buff[i] == '\n')
+		i++;
+	while (buff[i])
+		buff[j++] = buff[i++];
+	buff[j] = '\0';
 }

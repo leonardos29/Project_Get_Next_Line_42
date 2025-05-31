@@ -3,28 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leonasil <leonasil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: leonardo_ouza <leonardo_ouza@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/15 21:05:07 by leonasil          #+#    #+#             */
-/*   Updated: 2025/05/28 20:31:21 by leonasil         ###   ########.fr       */
+/*   Created: 2025/05/31 04:29:35 by leonardo_ou       #+#    #+#             */
+/*   Updated: 2025/05/31 04:40:59 by leonardo_ou      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include <fcntl.h>
-# include <unistd.h>
-# include <stdlib.h>
-
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 5
 # endif
 
+# include <fcntl.h> 
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+
 char	*get_next_line(int fd);
-size_t	ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);
-size_t	ft_strlcat(char *dst, const char *src, size_t size);
-void	*ft_memmove(void *dest, const void *src, size_t n);
-char	*extract_line(char *stash);
+char	*ft_strjoin(const char *s1, const char *s2);
+char	*get_line(char *stash);
+void	update_buff(char *buff);
+char	*read_file(int fd, char *stash, char *buff);
 #endif
