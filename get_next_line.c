@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leonardo_ouza <leonardo_ouza@student.42    +#+  +:+       +#+        */
+/*   By: leonasil <leonasil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 04:29:16 by leonardo_ou       #+#    #+#             */
-/*   Updated: 2025/05/31 05:59:54 by leonardo_ou      ###   ########.fr       */
+/*   Updated: 2025/06/20 14:56:59 by leonasil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*get_next_line(int fd)
 	char		*stash;
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (buff[0] != '\0')
 		stash = ft_strjoin("", buff);
@@ -32,19 +32,21 @@ char	*get_next_line(int fd)
 	stash = read_file(fd, stash, buff);
 	if (!stash)
 		return (NULL);
-	line = get_line(stash);
+	line = get_lin(stash);
 	update_buff(buff);
 	free(stash);
 	return (line);
 }
-/*
-int	main(void)
+/* int main()
 {
-	int	fd = open("./teste.txt", O_RDONLY);
-	char *line1 = get_next_line(fd);
-	
-	printf("%s",line1);
-	free(line1);
-	close(fd);
-}
-*/
+	int fd = open("teste.txt", O_RDONLY);
+    char *line;
+    while ((line = get_next_line(fd)) != NULL)
+    {
+        printf("%s", line);
+        free(line);
+    }
+    close(fd);
+    return (0);
+} */
+
